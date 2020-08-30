@@ -1,25 +1,25 @@
 ---
 home: true
-heroImage: /images/hero.png
-heroText: Hero 标题
-tagline: Hero 副标题
-actionText: 快速上手 →
-actionLink: /routes/
+heroImage: /images/logo.png
+heroText: Lerna
+tagline: 用于管理带有多个包的 JavaScript 项目的工具。
+actionText: v 3.22.1 →
+actionLink: /routes/start
 meta:
   - name: description
-    content: 模板
+    content: Lerna.js 是用于管理带有多个包的 JavaScript 项目的工具
   - name: keywords
-    content: 关键词, 关键词
+    content: Lerna, package management，Lerna 中文文档, Lerna.js, lerna.js
   - name: feversion
-    content: 版本号
+    content: v 3.22.1
   - name: fetags
-    content: "[{'kind': 'node'}, {'kind':'js', 'text': 'js'}]"
+    content: "[{'kind': 'iconNodejs', 'text': 'Node.js'}, {'kind':'iconpackage', 'text': '包管理'}]"
 features:
-  - title: 简洁至上
-    details: 以 Markdown 为中心的项目结构，以最少的配置帮助你专注于写作。
-  - title: Vue驱动
-    details: 享受 Vue + webpack 的开发体验，在 Markdown 中使用 Vue 组件，同时可以使用 Vue 来开发自定义主题。
-  - title: 高性能
-    details: VuePress 为每个页面预渲染生成静态的 HTML，同时在页面被加载的时候，将作为 SPA 运行。
+  - title: 
+    details: 
+  - title: git & npm 
+    details: Lerna 是一个使用 git 和 npm 优化多包存储库管理工作流的工具。
+  - title: 
+    details: 
 footer: MIT Licensed | Translated By 大笑
 ---

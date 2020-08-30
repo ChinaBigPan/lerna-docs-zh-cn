@@ -1,7 +1,7 @@
 module.exports= {
-    title: '起手模板',
-    description: "别忘了改改它",
-    base: '/dont-forget-this/',
+    title: 'Lerna',
+    description: "用于管理带有多个包的 JavaScript 项目的工具。",
+    base: '/lerna-docs-zh-cn/',
     markdown: {
         lineNumbers: true,
         anchor: {
@@ -10,7 +10,7 @@ module.exports= {
     },
     themeConfig: {
         activeHeaderLinks: true,
-        displayAllHeaders: true,
+        displayAllHeaders: false,
         nav: [
             // {
             //     text: "主站",
@@ -23,25 +23,40 @@ module.exports= {
         ],
         sidebar: [
             {
-                title: '首页',
-                path: '/',
+                title: '关于',
+                path: '/routes/about',
                 sidebarDepth: 2
             },
             {
-                title: 'Logo写了吗',
-                path: '/routes/',
+                title: '开始',
+                path: '/routes/start',
                 sidebarDepth: 2
             },
             {
-                title: '版本号写了么',
-                path: '/routes/chapter1.html',
+                title: '如何工作的？',
+                path: '/routes/how_it_works',
+                sidebarDepth: 2
+            },
+            {
+                title: '排忧解难',
+                path: '/routes/troubleshooting',
+                sidebarDepth: 2
+            },
+            {
+                title: '常见问题',
+                path: '/routes/FAQ',
+                sidebarDepth: 2
+            },
+            {
+                title: '概念',
+                path: '/routes/concepts',
                 sidebarDepth: 2
             }
         ]
     },
     head: [
         ["link", {
-            rel: "icon", href: "/images/favicon.ico"
+            rel: "icon", href: "/images/lerna_favicon.ico"
         }]
     ]
 }
