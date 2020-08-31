@@ -123,8 +123,46 @@ src/
 
 ## Git 托管的依赖
 
+Lerna 允许本地依赖包的目标版本通过`committish`编写为[git 远程 url](https://docs.npmjs.com/cli/install)(例如`#v1.0.0`或`#semver:^1.0.0`)。而非正常数值范围版本。当包必须为私有且无需[私有的 npm 注册表](https://www.dotconferences.com/2016/05/fabien-potencier-monolithic-repositories-vs-many-repositories)时，允许通过 git 仓库发包。
+
+请注意，lerna 并没有实际地将 git 历史记录分割到单独的只读存储库当中。这是用户的事情。(点击[这里](https://github.com/lerna/lerna/pull/1033#issuecomment-335894690)了解实现细节)。
+
+```js
+// packages/pkg-1/package.json
+{
+  name: "pkg-1",
+  version: "1.0.0",
+  dependencies: {
+    "pkg-2": "github:example-user/pkg-2#v1.0.0"
+  }
+}
+
+// packages/pkg-2/package.json
+{
+  name: "pkg-2",
+  version: "1.0.0"
+}
+```
+
+在上面的示例中：
+
+- `lerna bootstrap`会将`pkg-2`与`pkg-1`恰当的连接起来。
+- `lerna publish`当`pkg-2`发生变化时，它将更新`pkg-1`中的 committish (`#v1.0.0`)。
+
+## README 标签
+
+用 Lerna 不整一个标签么？[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+
+```md
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+```
+
+## 向导
+
+如果您喜欢一些关于 cli 的指导信息(如果您即将开始使用 lerna 或将其介绍给一个新的团队)，那么您可能会喜欢[lerna-wizard](https://github.com/szarouski/lerna-wizard)。它通过一些定义好的步骤来帮助您：
 
 
+![image](/lerna-docs-zh-cn/images/lerna-wizard.png)
 
 
 

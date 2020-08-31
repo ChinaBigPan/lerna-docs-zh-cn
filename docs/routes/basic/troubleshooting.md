@@ -87,7 +87,7 @@ lerna ERR! execute CONFLICT (content): Merge conflict in [file]
 
 - 发布提示符将使用 v1.1.0 作为主要/次要/补丁(major/minor/patch)建议的基础。
 - 当使用`--conventional-commit`时：
-    - 建议基于自 v1.1.0 以来的所有提交(包括来自 v1.2.0、v1.2.1 等的提交)来增加 semver。
+    - 建议基于自 v1.1.0 以来的所有提交(包括来自 v1.2.0、v1.2.1 等的提交)来增加语义化版本号。
     - 生成的 CHANGELOG.md 文件将重复所有已经在 v1.2.0、v1.2.1 等版本中发布的提交。
 
 **解决办法：**

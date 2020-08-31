@@ -4,7 +4,7 @@ heroImage: /images/logo.png
 heroText: Lerna
 tagline: 用于管理带有多个包的 JavaScript 项目的工具。
 actionText: v 3.22.1 →
-actionLink: /routes/start
+actionLink: /routes/basic/start
 meta:
   - name: description
     content: Lerna.js 是用于管理带有多个包的 JavaScript 项目的工具
