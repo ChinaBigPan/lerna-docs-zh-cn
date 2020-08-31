@@ -42,7 +42,7 @@ Lerna 永远不会发布标记为`private`的包（`package.json`中的`”priva
 
 `lerna publish`支持`lerna version`提供的所有配置项，除了以下这些：
 
-`--canary`
+### `--canary`
 
 ```shell
 lerna publish --canary
@@ -58,11 +58,42 @@ lerna publish --canary preminor
 # 1.0.0 => 1.1.0-alpha.0+${SHA}
 ```
 
+当使用该标志运行时，`lerna publish`以更粒度的方式(每次提交)来发布包。在发布到 npm 之前，它会通过当前的`version`创建新的`version`标记，升级到下一个小版本(minor)，添加传入的 meta 后缀(默认为`alpha`)并且附加当前的 git sha 码（例如：`1.0.0`变成`1.1.0-alpha.0+81e3b443`）。
 
+如果您已经从 CI 中的多个活动开发分支发布了 canary 版本，那么建议在每个分支的基础上定制`[--preid](https://github.com/lerna/lerna/tree/master/commands/publish#--preid)`和`[--dist-tag <tag>](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)`以避免版本冲突。
 
+> 该参数是需要发布每次提交版或每日构建版时使用。
 
+### `--contents <dir>`
 
+要发布的子目录。必定应用于所有包，且必须包含 package.json 文件。包的生命周期仍然在原来的叶子目录中运行。您应当使用其中的一个生命周期(`prepare`、`prepublishOnly`或`prepack`)来创建子目录等等。
 
+如果您不喜欢非必要的复杂发布，这将给您带来乐趣。
+
+```shell
+lerna publish --contents dist
+# 发布每个由 Lerna 管理的叶子包的 dist 文件夹
+```
+
+::: tip 注意
+您应该等到`postpublish`生命周期阶段(根目录或叶目录)才清理这个生成的子目录，因为生成的 package.json 是在包上传期间(在`postpack`之后)使用的。
+:::
+
+### `--dist-tag <tag>`
+
+```shell
+lerna publish --dist-tag next
+```
+
+当带有该参数时，`lerna publish`将使用给定的 npm [dist-tag](https://docs.npmjs.com/cli/dist-tag)(默认为`latest`) 发布到 npm。
+
+该配置项可用于在非`latest`的 dist-tag 下发布[预发布](http://carrot.is/coding/npm_prerelease)或`beta`版本，帮助用户免于自动升级到预发布质量的代码。
+
+::: tip 注意
+`latest`标记是用户运行`npm install my-package`时使用的标记。要安装不同的标记，用户可以运行`npm install my-package@prerelease`。
+:::
+
+### `--git-head <sha>`
 
 
 
