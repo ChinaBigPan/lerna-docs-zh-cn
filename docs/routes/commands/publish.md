@@ -61,7 +61,7 @@ lerna publish --canary preminor
 
 当使用该标志运行时，`lerna publish`以更粒度的方式(每次提交)来发布包。在发布到 npm 之前，它会通过当前的`version`创建新的`version`标记，升级到下一个小版本(minor)，添加传入的 meta 后缀(默认为`alpha`)并且附加当前的 git sha 码（例如：`1.0.0`变成`1.1.0-alpha.0+81e3b443`）。
 
-如果您已经从 CI 中的多个活动开发分支发布了 canary 版本，那么建议在每个分支的基础上定制`[--preid](https://github.com/lerna/lerna/tree/master/commands/publish#--preid)`和`[--dist-tag <tag>](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)`以避免版本冲突。
+如果您已经从 CI 中的多个活动开发分支发布了 canary 版本，那么建议在每个分支的基础上定制[--preid](https://github.com/lerna/lerna/tree/master/commands/publish#--preid)和[--dist-tag &lt;tag&gt;](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)以避免版本冲突。
 
 > 该参数是需要发布每次提交版或每日构建版时使用。
 
@@ -96,7 +96,7 @@ lerna publish --dist-tag next
 
 ### `--git-head <sha>`
 
-在打包压缩时，显式地在 manifest 上设置为 gitHead，该操作只允许通过`[from-package](https://github.com/lerna/lerna/tree/master/commands/publish#bump-from-package)`位置进行。
+在打包压缩时，显式地在 manifest 上设置为 gitHead，该操作只允许通过[from-package](https://github.com/lerna/lerna/tree/master/commands/publish#bump-from-package)位置进行。
 
 举个例子，当我们从 AWS CodeBuild (这里`git`用不了)发布时，您可以使用该配置项传递适当的[环境变量](https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html)来作为该包的元数据。
 
@@ -130,7 +130,7 @@ lerna publish --graph-type all
 
 ### `--ignore-scripts`
 
-这个参数会让`lerna publish`在发布期间禁用运行的`[生命周期脚本](https://github.com/lerna/lerna/tree/master/commands/publish#lifecycle-scripts)`
+这个参数会让`lerna publish`在发布期间禁用运行的[生命周期脚本](https://github.com/lerna/lerna/tree/master/commands/publish#lifecycle-scripts)
 
 ### `--ignore-prepublish`
 
@@ -195,7 +195,7 @@ lerna publish --otp 123456
 
 ### `--preid`
 
-和同名的`lerna version`配置项不同，该配置项仅适用于`[--canary](https://github.com/lerna/lerna/tree/master/commands/publish#--canary)`版本计算。
+和同名的`lerna version`配置项不同，该配置项仅适用于 [--canary](https://github.com/lerna/lerna/tree/master/commands/publish#--canary) 版本计算。
 
 ```shell
 lerna publish --canary
@@ -215,9 +215,88 @@ lerna publish --canary --preid next
 lerna publish --pre-dist-tag next
 ```
 
-除了只适用于与预发行版本一起发布的软件包外，它和`[--dist-tag](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)`并无二致。
+除了只适用于与预发行版本一起发布的软件包外，它和[--dist-tag](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)并无二致。
 
 ### `--registry <url>`
+
+当使用该参数运行时，转发的 npm 命令将为您的包使用指定 url 的注册表。
+
+如果您不想在使用私有注册表时在所有`package.json`文件中分别设置注册表配置，那就是它出场的时候。
+
+### `--tag-version-prefix`
+
+配置项项允许提供自定义前缀来替代默认的`v`:
+
+```shell
+# 本地
+lerna version --tag-version-prefix=''
+
+# CI
+lerna publish from-git --tag-version-prefix=''
+```
+
+您也可以在`lerna.json`中进行配置，对这两个命令也同样适用：
+
+```json
+{
+  "tagVersionPrefix": "",
+  "packages": ["packages/*"],
+  "version": "independent"
+}
+```
+
+### `--temp-tag`
+
+当传递了该参数时，他将会改变默认的发布过程，首先将所有更改过的包发布到一个临时的 dist-tag (`lerna-temp`)中，然后将新版本移动到由[--dist-tag](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)配置的 dist-tag 中(默认值`latest`)。
+
+这通常是没有必要的，因为Lerna在默认情况下会按照拓扑顺序(所有依赖项优先)来发布包。
+
+### `--yes`
+
+```shell
+lerna publish --canary --yes
+# 跳过“您确定要发布上述更改吗?”
+```
+
+当使用此标志运行时，`lerna publish`将跳过所有确认提示。在[持续集成(CI)](https://en.wikipedia.org/wiki/Continuous_integration)中用于自动回答发布确认提示。
+
+## 已废弃的配置项
+
+### `--skip-npm`
+
+直接调用 [lerna version](https://github.com/lerna/lerna/tree/master/commands/version#positionals) 即可。
+
+## 每个包的配置
+
+叶子包可以可以配置特殊的[publishConfig](https://docs.npmjs.com/files/package.json#publishconfig)，在某些情况下可以改变`lerna publish`的行为。
+
+### `publishConfig.access`
+
+要发布具有作用域的包(如`@mycompany/rocks`)，您必须设置[access](https://docs.npmjs.com/misc/config#access):
+
+```json
+"publishConfig": {
+  "access": "public"
+}
+```
+
+- 如果把该字段设置到无作用域的包上，那么它会失败的。
+- 如果您希望限定范围的包保持私有状态(即`“restricted”`)，则无需设置该值。
+
+**注意：这与在叶子包中设置`“private:true”`不一样。如果设置了`private`字段，那么在任何情况下都不会发布该包。**
+
+### `publishConfig.registry`
+
+
+
+
+
+
+
+
+
+
+
 
 
 
