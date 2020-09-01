@@ -1,5 +1,6 @@
 ---
 title: lerna/publish
+sidebarDepth: 3
 ---
 
 # `@lerna/publish`
@@ -95,13 +96,128 @@ lerna publish --dist-tag next
 
 ### `--git-head <sha>`
 
+在打包压缩时，显式地在 manifest 上设置为 gitHead，该操作只允许通过`[from-package](https://github.com/lerna/lerna/tree/master/commands/publish#bump-from-package)`位置进行。
 
+举个例子，当我们从 AWS CodeBuild (这里`git`用不了)发布时，您可以使用该配置项传递适当的[环境变量](https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-env-vars.html)来作为该包的元数据。
 
+```js
+lerna publish from-package --git-head ${CODEBUILD_RESOLVED_SOURCE_VERSION}
+```
 
+在所有其他情况下，该值是从本地的`git`命令派生而成的。
 
+### `--graph-type <all|dependencies>`
 
+设置在构建包依赖图时使用哪种依赖关系。默认值是`dependencies`，因此只包括包的`package.json`的`dependencies`部分中列出的包。若设置为`all`，则在构建包依赖图和决定拓扑顺序时会包括`dependencies`和`devDependencies`。
 
+在使用传统的 peer + dev 依赖对时，应该将此项配置为`all`，以便 peer 可以总在其依赖项之前发布。
 
+```bash
+lerna publish --graph-type all
+```
+
+通过`lerna.json`来配置:
+
+```json
+{
+  "command": {
+    "publish": {
+      "graphType": "all"
+    }
+  }
+}
+```
+
+### `--ignore-scripts`
+
+这个参数会让`lerna publish`在发布期间禁用运行的`[生命周期脚本](https://github.com/lerna/lerna/tree/master/commands/publish#lifecycle-scripts)`
+
+### `--ignore-prepublish`
+
+这个参数会让`lerna publish`在发布期间禁用[已废弃](https://docs.npmjs.com/misc/scripts#prepublish-and-prepare)的[`prepublish`脚本](https://github.com/lerna/lerna/tree/master/commands/publish#lifecycle-scripts)。
+
+### `--legacy-auth`
+
+当您发布需要身份验证但使用内部托管的 NPM 注册表时，该注册表只使用旧 Base64 版本的 username:password。这与 NPM publish 的 `_auth`标志相同。
+
+```shell
+lerna publish --legacy-auth aGk6bW9t
+```
+
+### `--no-git-reset`
+
+默认情况下，`lerna publish`确保任何对工作树的更改都会被重置。
+
+为了避免这种情况，可以设置`——no-git-reset`。当作为 CI 流程的一部分与`——canary`一起使用时，这一点特别有用。例如，已经被替换的`package.json`版本号可能需要在随后的`CI`流程步骤中使用(比如 Docker 构建)。
+
+```shell
+lerna publish --no-git-reset
+```
+
+### `--no-granular-pathspec`
+
+默认情况下，`lerna publish`将尝试(如果启用)只`git checkout`在发布过程中临时修改的叶子包清单。这相当于`git checkout -- packages/*/package.json`，但是*精确地*定制了变化。
+
+如果您确实知道您需要不同的行为，那么您就会理解：通过`--no-granular-pathspec`会让 git 命令执行的`git checkout -- .`。通过选择这个[路径规范](https://git-scm.com/docs/gitglossary#Documentation/gitglossary.txt-aiddefpathspecapathspec)，您必须有意忽略所有未版本化的内容。
+
+该项最好在`lerna.json`中配置，否则会原地去世的：
+
+```json
+{
+  "version": "independent",
+  "granularPathspec": false
+}
+```
+
+根级配置是有意为之，因为它还包括了[`lerna version`中的同名配置项](https://github.com/lerna/lerna/tree/master/commands/version#--no-granular-pathspec)。
+
+### `--no-verify-access`
+
+默认情况下，`lerna`将严重登录的 npm 用户对即将发布的包的访问权限。设置该参数将禁用该验证。
+
+如果您使用的是不支持`npm access ls-packages`的第三方注册表，则需要设置它(或在`lerna.json`中设置`command.publish.verifyAccess`为`false`)。
+
+::: warning 小心
+请小心使用。
+:::
+
+### `--otp`
+
+当发布需要双重身份验证的包时，您可以使用`——otp`指定[一次性密码](https://docs.npmjs.com/about-two-factor-authentication):
+
+```shell
+lerna publish --otp 123456
+```
+
+::: warning 请注意
+一次性密码在生成后 **30** 秒内过期。如果它在发布操作期间到期，提示符将在继续之前请求更新后的值。
+:::
+
+### `--preid`
+
+和同名的`lerna version`配置项不同，该配置项仅适用于`[--canary](https://github.com/lerna/lerna/tree/master/commands/publish#--canary)`版本计算。
+
+```shell
+lerna publish --canary
+# 举例，使用下一个语义化预发布版本
+# 1.0.0 => 1.0.1-alpha.0
+
+lerna publish --canary --preid next
+# 举例，使用指定的预发布标识符来标识下一个语义化预发布版本
+# 1.0.0 => 1.0.1-next.0
+```
+
+当使用该参数运行时，`lerna publish --canary`将使用指定的 [prerelease 标识符](http://semver.org/#spec-item-9)递增`premajor`、`preminor`、`prepatch`或`prerelease`语义化版本。
+
+### `--pre-dist-tag <tag>`
+
+```shell
+lerna publish --pre-dist-tag next
+```
+
+除了只适用于与预发行版本一起发布的软件包外，它和`[--dist-tag](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)`并无二致。
+
+### `--registry <url>`
 
 
 
