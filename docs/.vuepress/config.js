@@ -1,34 +1,3 @@
-// {
-//     title: '关于',
-//     path: '/routes/about',
-//     sidebarDepth: 2
-// },
-// {
-//     title: '开始',
-//     path: '/routes/start',
-//     sidebarDepth: 2
-// },
-// {
-//     title: '如何工作的？',
-//     path: '/routes/how_it_works',
-//     sidebarDepth: 2
-// },
-// {
-//     title: '排忧解难',
-//     path: '/routes/troubleshooting',
-//     sidebarDepth: 2
-// },
-// {
-//     title: '常见问题',
-//     path: '/routes/FAQ',
-//     sidebarDepth: 2
-// },
-// {
-//     title: '概念',
-//     path: '/routes/concepts',
-//     sidebarDepth: 2
-// }
-
 function getBasicSideBar() {
     return [
         'about',
@@ -43,7 +12,8 @@ function getBasicSideBar() {
 function getCommandsSideBar() {
     return [
         '',
-        'publish'
+        'publish',
+        'version'
     ]
 }
 

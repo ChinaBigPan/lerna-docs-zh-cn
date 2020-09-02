@@ -287,18 +287,74 @@ lerna publish --canary --yes
 
 ### `publishConfig.registry`
 
+您可以通过设置[registry](https://docs.npmjs.com/misc/config#registry)在每个包上定制注册表。
 
+```json
+"publishConfig": {
+  "registry": "http://my-awesome-registry.com/"
+}
+```
 
+- 传入[--registry](https://github.com/lerna/lerna/tree/master/commands/publish#--registry-url)可以应用到全局，其实在某些情况下会起到反效果。
 
+### `publishConfig.tag`
 
+您可以通过设置[tag](https://docs.npmjs.com/misc/config#tag)来定制每个包的 dist-tag:
 
+```json
+"publishConfig": {
+  "tag": "flippin-sweet"
+}
+```
 
+- 传入[--dist-tag](https://github.com/lerna/lerna/tree/master/commands/publish#--dist-tag-tag)将会覆盖该值。
+- 如果同时传入了[--canary](https://github.com/lerna/lerna/tree/master/commands/publish#--canary)则该值会被忽略。
+  
+### `publishConfig.directory`
 
+这个非标准字段允许您定制已发布的子目录，就像[--contents](https://github.com/lerna/lerna/tree/master/commands/publish#--contents-dir)一样，但它是以每个包为基础的。所有其他关于`--contents`的内容仍然适用。
 
+```json
+"publishConfig": {
+  "directory": "dist"
+}
+```
 
+## 生命周期脚本
 
+```shell
+// prepublish:      在打包和发布包之前运行。
+// prepare:         在打包和发布包之前运行，在 prepublish 之后，prepublishOnly 之前。
+// prepublishOnly:  在打包和发布包之前运行，只在 npm publish 时运行。
+// prepack:         只在源码压缩打包之前运行。
+// postpack:        在源码压缩打包生成并移动到最终目的地后运行。
+// publish:         在包发布后运行。
+// postpublish:     在包发布后运行。
+```
 
+Lerna 将在`lerna publish`期间运行[npm生命周期脚本](https://docs.npmjs.com/misc/scripts#description)，顺序如下:
 
+1. 如果采用没有指定版本，则运行所有[版本生命周期脚本](https://github.com/lerna/lerna/tree/master/commands/version#lifecycle-scripts)
+2. 如果[可用](https://github.com/lerna/lerna/tree/master/commands/publish#--ignore-prepublish)，在根目录运行`prepublish`生命周期。
+3. 在根目录中运行`prepare`生命周期。
+4. 在根目录中运行`prepublishOnly`生命周期。
+5. 在根目录运行`prepack`生命周期。
+6. 对于每个更改的包，按照拓扑顺序(所有依赖项在依赖关系之前):    
+   i. 如果[可用](https://github.com/lerna/lerna/tree/master/commands/publish#--ignore-prepublish)，运行`prepublish`生命周期。    
+   ii. 运行`prepare`生命周期。    
+   iii. 运行`prepublishOnly`生命周期。    
+   iv. 运行`prepack`生命周期。   
+   v. 通过[JS API](https://github.com/lerna/lerna/tree/master/utils/pack-directory#readme)在临时目录中创建源码压缩包。
+   vi. 运行`postpack`生命周期。    
+7. 在根目录运行`postpack`生命周期。
+8. 对于每个更改的包，按照拓扑顺序(所有依赖项在依赖关系之前):  
+   i. 通过[JS API](https://github.com/lerna/lerna/tree/master/utils/npm-publish#readme)发布包到配置的[注册表](https://github.com/lerna/lerna/tree/master/commands/publish#--registry-url)。   
+   ii. 运行`publish`生命周期。    
+   iii. 运行`postpublish`生命周期。 
+9. 在根目录中运行`publish`生命周期。
+   - 为了避免递归调用，不要使用这个根生命周期来运行`lerna publish`。
+10. 在根目录中运行`postpublish`生命周期。
+11. 如果[可用](https://github.com/lerna/lerna/tree/master/commands/publish#--temp-tag)，将临时的 dist-tag 更新到最新
 
 
 

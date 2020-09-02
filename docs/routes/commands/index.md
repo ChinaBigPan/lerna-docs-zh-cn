@@ -7,7 +7,7 @@ title: 指令总览
 | 指令 | 解释 | 链接(英文) |
 |:---:|----|-----|
 | `lerna publish` | 在当前项目中发布包 |[前往](https://github.com/lerna/lerna/blob/master/commands/publish#readme) |
-| `lerna version` | |[前往](https://github.com/lerna/lerna/blob/master/commands/version#readme)|
+| `lerna version` | 更改自上次发布以来的包版本号 |[前往](https://github.com/lerna/lerna/blob/master/commands/version#readme)|
 | `lerna bootstrap` | |[前往](https://github.com/lerna/lerna/blob/master/commands/bootstrap#readme)|
 | `lerna list` |  |[前往](https://github.com/lerna/lerna/blob/master/commands/list#readme)|
 | `lerna changed` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/changed#readme)|
