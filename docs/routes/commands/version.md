@@ -113,20 +113,46 @@ lerna version --conventional-commits --changelog-preset angular-bitbucket
 lerna version --conventional-commits
 ```
 
-当您使用这个参数运行时，`lerna version`将使用[传统的提交规范](https://conventionalcommits.org/)来[确定版本](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-recommended-bump)并[生成 CHANGELOG.md 文件](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-cli)。
+[传统的提交规范]:https://conventionalcommits.org/
+[确定版本]:https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-recommended-bump
+[生成 CHANGELOG.md 文件]:https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-cli
 
-传入[--no-changelog](https://github.com/lerna/lerna/tree/master/commands/version#--no-changelog)将阻止生成(或更新)`CHANGELOG.md`文件。
+当您使用这个参数运行时，`lerna version`将使用[传统的提交规范][传统的提交规范]来[确定版本][确定版本]并[生成 CHANGELOG.md 文件][生成 CHANGELOG.md 文件]。
+
+[--no-changelog]:https://github.com/lerna/lerna/tree/master/commands/version#--no-changelog
+
+传入[--no-changelog][--no-changelog]将阻止生成(或更新)`CHANGELOG.md`文件。
 
 ## `--conventional-graduate`
 
 ```shell
 lerna version --conventional-commits --conventional-graduate=package-2,package-4
 
-# 强制所有的预发行包分级
+# 强制分隔所有的预发行包
 lerna version --conventional-commits --conventional-graduate
 ```
 
-When run with this flag, lerna version will graduate the specified packages (comma-separated) or all packages using *. This command works regardless of whether the current HEAD has been released, similar to --force-publish, except that any non-prerelease packages are ignored. If changes are present for packages that are not specified (if specifying packages), or for packages that are not in prerelease, those packages will be versioned as they normally would using --conventional-commits.
+当使用该参数时，`lerna version`将使用 * 分隔指定的包(用逗号隔开的)或所有的包。无论当前的 HEAD 是否已释放，该命令都可以工作，它和`--force-publish`相类似，除了忽略任何非预发布包。如果未指定的包(如果指定了包)或未预先发布的包发生了更改，那么这些包将按照它们通常使用的`--conventional-commits`提交的方式进行版本控制。
+
+“分隔”一个软件包意味着一个预发布版本的非预发布版本变体。例如`package-1@1.0.0-alpha.0 => package-1@1.0.0`。
+
+> 注意：当指定包时，它的依赖项将被释放，但不会被分隔。
+
+## `--conventional-prerelease`
+
+```shell
+lerna version --conventional-commits --conventional-prerelease=package-2,package-4
+
+# 强制所有发生改变的包变为预发布
+lerna version --conventional-commits --conventional-prerelease
+```
+
+
+
+
+
+
+
 
 
 
