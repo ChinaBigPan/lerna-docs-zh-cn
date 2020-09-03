@@ -13,7 +13,8 @@ function getCommandsSideBar() {
     return [
         '',
         'publish',
-        'version'
+        'version',
+        'bootstrap'
     ]
 }
 

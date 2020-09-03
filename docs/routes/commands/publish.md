@@ -5,6 +5,8 @@ sidebarDepth: 3
 
 # `@lerna/publish`
 
+> 在当前项目中发布包
+
 ## 使用
 
 ```bash
