@@ -132,7 +132,7 @@ lerna version --conventional-commits --conventional-graduate=package-2,package-4
 lerna version --conventional-commits --conventional-graduate
 ```
 
-当使用该参数时，`lerna version`将使用 * 分隔指定的包(用逗号隔开的)或所有的包。无论当前的 HEAD 是否已释放，该命令都可以工作，它和`--force-publish`相类似，除了忽略任何非预发布包。如果未指定的包(如果指定了包)或未预先发布的包发生了更改，那么这些包将按照它们通常使用的`--conventional-commits`提交的方式进行版本控制。
+当使用该参数时，`lerna version`将使用`*`分隔指定的包(用逗号隔开的)或所有的包。无论当前的 HEAD 是否已释放，该命令都可以工作，它和`--force-publish`相类似，除了忽略任何非预发布包。如果未指定的包(如果指定了包)或未预先发布的包发生了更改，那么这些包将按照它们通常使用的`--conventional-commits`提交的方式进行版本控制。
 
 “分隔”一个软件包意味着一个预发布版本的非预发布版本变体。例如`package-1@1.0.0-alpha.0 => package-1@1.0.0`。
 
@@ -147,18 +147,184 @@ lerna version --conventional-commits --conventional-prerelease=package-2,package
 lerna version --conventional-commits --conventional-prerelease
 ```
 
+当使用该参数时，`lerna version`将使用`*`分隔指定的包(用逗号隔开的)或所有的包。通过在`conventional-commits`的版本推荐之前加上`pre`，可以将所有未发布的更改作为 pre (patch/minor/major/release)版来发布。如果当前的更改包含了特性提交，那么推荐的版本将成为`minor`，因此该参数会使其成为`preminor`发布。如果未指定的包(如果指定了包)或未预先发布的包发生了更改，那么这些包将按照它们通常使用的`--conventional-commits`提交的方式进行版本控制。
 
+## `--create-release <type>`
 
+```shell
+lerna version --conventional-commits --create-release github
+lerna version --conventional-commits --create-release gitlab
+```
 
+当使用该参数时，`lerna version`将基于更改的包创建一个正式的 GitHub 或 GitLab 版本。需要传递`conventional-commits`以便生成变更日志。
 
+要使用 GitHub 进行身份验证，可以定义以下环境变量。
 
+- `GH_TOKEN`（必须）- 您的 GitHub 认证 token (在设置(Settings) > 开发人员设置(Developer Settings) > 个人访问令牌(Personal access tokens)下)。
+- `GHE_API_URL` - 当使用 GitHub Enterprise 时，API 的绝对URL。
+- `GHE_VERSION` - 当使用 GitHub Enterprise 时，当前安装的 GHE 版本。[支持以下版本](https://github.com/octokit/plugin-enterprise-rest.js)。
 
+要使用 GitLab 进行身份验证，可以定义以下环境变量。
 
+- `GL_TOKEN`（必须）- 您的 GitLab 认证 token (在用户设置(User Settings) > 访问令牌(Access Tokens)下)。
+- `GL_API_URL` - API 的绝对URL，包括版本号。(默认值：https://gitlab.com/api/v4)
 
+::: warning 注意
+当使用该配置项的时候，不要设置`--no-changelog`
+:::
 
+该配置项也可以在`lerna.json`中配置：
 
+```json
+{
+  "changelogPreset": "angular"
+}
+```
 
+[预设配置]:https://github.com/conventional-changelog/conventional-changelog-config-spec
 
+如果预先导出一个构件函数（如：`conventional-changelog-conventionalcommits`），您也可以指定[预设配置][预设配置]：
+
+```json
+{
+  "changelogPreset": {
+    "name": "conventionalcommits",
+    "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
+  }
+}
+```
+
+## `--exact`
+
+```shell
+lerna version --exact
+```
+
+当使用该参数时，`lerna version`将在更新的包中精确地指定更新过的依赖项(无标点符号)，而不做语义化版本号兼容(使用`^`)。
+
+[依赖关系]:https://docs.npmjs.com/files/package.json#dependencies
+
+有关更多信息，请参见 package.json 文档的[依赖关系][依赖关系]。
+
+## `--force-publish`
+
+```shell
+lerna version --force-publish=package-2,package-4
+
+# 强制所有的包标上版本
+lerna version --force-publish
+```
+
+当使用该参数时，`lerna version`将强制发布指定的包(逗号分隔)或使用`*`发布所有包。
+
+::: tip 注意
+这将跳过以更改包的`lerna changed`检查，并强制更新没有`git diff`更改的包。
+:::
+
+## `--git-remote <name>`
+
+```shell
+lerna version --git-remote upstream
+```
+
+当使用该参数时，`lerna version`将把git更改推送到指定的远程服务器，而不是`origin`。
+
+## `--ignore-changes`
+
+当检测到更改的包时，忽略由通配符匹配到的文件中的更改。
+
+```shell
+lerna version --ignore-changes '**/*.md' '**/__tests__/**'
+```
+
+该配置项最好通过`lerna.json`指定，既避免过早的 shell 验证也能够和`lerna diff`及`lerna changed`共享配置：
+
+```json
+{
+  "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"]
+}
+```
+
+使用`--no-ignore-changes`禁用任何现有的持久配置。
+
+::: warning 在下列情况下，无论该配置项如何设置，包都会发布：
+1. 该包的最新版本是`prerelease`版(即`1.0.0-alpha`，`1.0.0-0.3.7`等等)。
+2. 包的一个或多个相关依赖项已发生更改。
+::: 
+
+## `--ignore-scripts`
+
+[生命周期脚本]:https://github.com/lerna/lerna/tree/master/commands/version#lifecycle-scripts
+
+当使用该参数时，`lerna version`会在运行期间禁用[生命周期脚本][生命周期脚本]
+
+## `--include-merged-tags`
+
+```shell
+lerna version --include-merged-tags
+```
+
+在检测更改的包时包含合并分支的标记。
+
+## `--message <msg>`
+
+可简写为`-m`，用于`git commit`。
+
+```shell
+lerna version -m "chore(release): publish %s"
+# commit message = "chore(release): publish v1.0.0"
+
+lerna version -m "chore(release): publish %v"
+# commit message = "chore(release): publish 1.0.0"
+
+# 当单独对包进行版本控制时，不会替换占位符
+lerna version -m "chore(release): publish"
+# commit message = "chore(release): publish
+#
+# - package-1@3.0.1
+# - package-2@1.5.4"
+```
+
+[commitizen]:https://github.com/commitizen/cz-cli
+[语义化版本发布]:https://github.com/semantic-release/semantic-release
+
+当使用该参数时，`lerna version`会在提交发布版本更新时使用所提供的消息。对于将 lerna 集成到期望提交消息遵守某些规则的项目中非常有用，例如使用[commitizen][commitizen]和/或[语义化版本发布][语义化版本发布]的项目。
+
+如果消息包含`%s`，则将其替换为新的全局版本版本号，该版本号前缀为“v”。如果消息包含`%v`，它将被替换为新的全局版本版本号，但没有前缀“v”。注意，这个占位符插值只在使用默认的“固定”版本模式时使用，因为在独立版本控制时没有“全局”版本可以进行插值。
+
+在`lerna.json`中这样配置：
+
+```json
+{
+  "command": {
+    "version": {
+      "message": "chore(release): publish %s"
+    }
+  }
+}
+```
+
+## `--no-changelog`
+
+```shell
+lerna version --conventional-commits --no-changelog
+```
+
+使用`--conventional-commits`时，不要生成任何`CHANGELOG.md`文件。
+
+::: warning 注意
+当使用该配置项的时候，不要设置`--create-release`
+:::
+
+## `--no-commit-hooks`
+
+默认情况下，`lerna version`将允许 git commit 钩子在提交版本更改时运行。通过`——no-commit-hook`来禁用此行为。
+
+[--commit-hooks]:https://docs.npmjs.com/misc/config#commit-hooks
+
+该配置项类似于`npm version`的[--commit-hooks][--commit-hooks]配置项，只是反过来了。
+
+## `--no-git-tag-version`
 
 
 
