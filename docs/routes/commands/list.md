@@ -18,7 +18,7 @@ title: lerna/list
 - `lerna ll`: 等同于`lerna ls -l`。
 - `lerna la`: 等同于`lerna ls -la`。显示所有的包(包括子包)。
 
-```shell
+```bash
 lerna ls
 package-1
 package-2
@@ -34,7 +34,7 @@ package-2
 
 以 JSON 数组的形式展示信息。
 
-```shell
+```bash
 $ lerna ls --json
 [
   {
@@ -56,7 +56,7 @@ $ lerna ls --json
 使用 [json](http://trentm.com/json/) 工具可以按照属性挑选
 :::
 
-```shell
+```bash
 lerna ls --json --all | json -a -c 'this.private === true' name
 package-3
 ```
@@ -67,7 +67,7 @@ package-3
 
 用[换行分隔][newline-delimited JSON]的方式展示信息。
 
-```shell
+```bash
 lerna ls --ndjson
 {"name":"package-1","version":"1.0.0","private":false,"location":"/path/to/packages/pkg-1"}
 {"name":"package-2","version":"1.0.0","private":false,"location":"/path/to/packages/pkg-2"}
@@ -79,7 +79,7 @@ lerna ls --ndjson
 
 展示默认隐藏的私有包。
 
-```shell
+```bash
 $ lerna ls --all
 package-1
 package-2
@@ -92,7 +92,7 @@ package-3 (private)
 
 显示扩展信息。
 
-```shell
+```bash
 lerna ls --long
 package-1 v1.0.1 packages/pkg-1
 package-2 v1.0.2 packages/pkg-2
@@ -113,7 +113,7 @@ package-3 v1.0.3 packages/pkg-3 (private)
 
 在`--long`输出中，每一行的格式都是以`:`分隔的`<fullpath>:<name>:<version>[:flags..]`
 
-```shell
+```bash
 lerna ls --parseable
 /path/to/packages/pkg-1
 /path/to/packages/pkg-2
@@ -132,7 +132,7 @@ lerna ls -pla
 
 按照拓扑顺序对包进行排序，而不是按目录对包进行词法排序。
 
-```shell
+```bash
 json dependencies <packages/pkg-1/package.json
 {
   "pkg-2": "file:../pkg-2"
@@ -147,7 +147,7 @@ package-1
 
 将依赖图显示为json格式的[邻接表](https://en.wikipedia.org/wiki/Adjacency_list)。
 
-```shell
+```bash
 lerna ls --graph
 {
   "pkg-1": [

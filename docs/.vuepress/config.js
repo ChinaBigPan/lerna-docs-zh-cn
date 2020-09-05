@@ -16,7 +16,9 @@ function getCommandsSideBar() {
         'version',
         'bootstrap',
         'list',
-        'changed'
+        'changed',
+        'diff',
+        'exec'
     ]
 }
 
