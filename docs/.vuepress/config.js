@@ -15,7 +15,8 @@ function getCommandsSideBar() {
         'publish',
         'version',
         'bootstrap',
-        'list'
+        'list',
+        'changed'
     ]
 }
 

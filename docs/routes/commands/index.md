@@ -9,7 +9,7 @@ title: 指令总览
 | `lerna publish` | 在当前项目中发布包 |[前往](https://github.com/lerna/lerna/blob/master/commands/publish#readme) |
 | `lerna version` | 更改自上次发布以来的包版本号 |[前往](https://github.com/lerna/lerna/blob/master/commands/version#readme)|
 | `lerna bootstrap` | 将本地包链接在一起并安装剩余的包依赖项 |[前往](https://github.com/lerna/lerna/blob/master/commands/bootstrap#readme)|
-| `lerna list` |  |[前往](https://github.com/lerna/lerna/blob/master/commands/list#readme)|
+| `lerna list` | 列出自上次标记发布以来发生变化的本地包 |[前往](https://github.com/lerna/lerna/blob/master/commands/list#readme)|
 | `lerna changed` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/changed#readme)|
 | `lerna diff` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/diff#readme)|
 | `lerna exec` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/exec#readme)|
