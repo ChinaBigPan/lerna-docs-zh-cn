@@ -5,7 +5,10 @@ function getBasicSideBar() {
         'how_it_works',
         'troubleshooting',
         'FAQ',
-        'concepts'
+        'concepts',
+        'global_options',
+        'filter_options',
+        'hoisting'
     ]
 }
 
