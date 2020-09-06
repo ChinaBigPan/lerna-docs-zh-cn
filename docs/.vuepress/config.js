@@ -21,7 +21,12 @@ function getCommandsSideBar() {
         'exec',
         'run',
         'init',
-        'add'
+        'add',
+        'clean',
+        'import',
+        'link',
+        'create',
+        'info'
     ]
 }
 
