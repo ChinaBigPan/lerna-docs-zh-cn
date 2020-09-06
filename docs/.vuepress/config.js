@@ -18,7 +18,10 @@ function getCommandsSideBar() {
         'list',
         'changed',
         'diff',
-        'exec'
+        'exec',
+        'run',
+        'init',
+        'add'
     ]
 }
 

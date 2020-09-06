@@ -13,8 +13,8 @@ title: 指令总览
 | `lerna changed` |  列出自上次标记发布以来发生变化的本地包  |[前往](https://github.com/lerna/lerna/blob/master/commands/changed#readme)|
 | `lerna diff` | 自上次发布以来的所有包或单个包的区别 |[前往](https://github.com/lerna/lerna/blob/master/commands/diff#readme)|
 | `lerna exec` | 在每个包中执行任意命令 |[前往](https://github.com/lerna/lerna/blob/master/commands/exec#readme)|
-| `lerna run` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/run#readme)|
-| `lerna init` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/init#readme)|
+| `lerna run` | 在包含该脚本中的每个包中运行 npm 脚本 |[前往](https://github.com/lerna/lerna/blob/master/commands/run#readme)|
+| `lerna init` | 创建一个新的 Lerna 仓库或将现有的仓库升级到 Lerna 的当前版本 |[前往](https://github.com/lerna/lerna/blob/master/commands/init#readme)|
 | `lerna add` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/add#readme)|
 | `lerna clean` |   |[前往](https://github.com/lerna/lerna/blob/master/commands/clean#readme)|
 | `lerna import` |    |[前往](https://github.com/lerna/lerna/blob/master/commands/import#readme)|
