@@ -1,7 +1,7 @@
 {
-  "name": "vuepress-template",
-  "version": "1.0.0",
-  "description": "",
+  "name": "kerna-docs-zh-cn",
+  "version": "3.22.1",
+  "description": "用于管理带有多个包的 JavaScript 项目的工具。",
   "main": "index.js",
   "author": "大笑 <daguogxp@qq.com>",
   "scripts": {

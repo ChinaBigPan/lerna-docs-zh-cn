@@ -46,18 +46,15 @@ module.exports= {
     themeConfig: {
         activeHeaderLinks: true,
         displayAllHeaders: false,
+        logo: "/images/logo.png",
         nav: [
-            // {
-            //     text: "主站",
-            //     link: "https://febeacon.com"
-            // },
+			{
+                text: "大笑文档",
+                link: "http://www.febeacon.com"
+            },
             {
                 text: "文档首页",
                 link: "/"
-            },
-            {
-                text: "英文文档",
-                link: "https://github.com/lerna/lerna"
             },
             {
                 text: "Lerna 指令",

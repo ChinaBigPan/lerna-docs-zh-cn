@@ -2,7 +2,11 @@
 title: 开始
 ---
 
+<febeacon />
+
 # 开搞
+
+[英文原地址](https://github.com/lerna/lerna)
 
 > 以下是针对 Lerna 3.x 的说明。我们建议使用它而不是 2.x 版本来启动一个新的 Lerna 项目。
 
